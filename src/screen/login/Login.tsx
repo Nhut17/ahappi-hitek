@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {IMAGES} from '../../assets';
 import InputText from '../../components/login/InputText';
@@ -10,6 +10,8 @@ import {FONTS} from '../../utils/typography';
 import {Controller, useForm} from 'react-hook-form';
 import {LoginAuthType} from '../../model/userModel';
 import {useLoginAuthMutation} from '../../services/authServices';
+import ROUTES from '../../navigation/route-key';
+import {useRootNavigation} from '../../store/hooks';
 
 const Login = () => {
   const {
@@ -19,6 +21,9 @@ const Login = () => {
   } = useForm<LoginAuthType>();
 
   const [loginAuth] = useLoginAuthMutation();
+  const [errorLogin, setErrorLogin] = useState<boolean>(false);
+
+  const rootNavigation = useRootNavigation();
 
   // handle Login
   const handleLogin = (dataForm: LoginAuthType) => {
@@ -27,6 +32,11 @@ const Login = () => {
       .unwrap()
       .then(res => {
         console.log(res);
+        rootNavigation.navigate(ROUTES.PRODUCT_SCREEN);
+        setErrorLogin(false);
+      })
+      .catch(() => {
+        setErrorLogin(true);
       });
   };
 
@@ -55,7 +65,9 @@ const Login = () => {
                 error={
                   (errors.username?.type === 'required' &&
                     strings.please_input_key) ||
-                  (errors.username?.type === 'pattern' && strings.invalid_email)
+                  (errors.username?.type === 'pattern' &&
+                    strings.invalid_email) ||
+                  (errorLogin && '  ')
                 }
               />
             )}
@@ -70,10 +82,12 @@ const Login = () => {
               <InputText
                 placeholder={strings.your_password}
                 value={value}
+                secureText
                 onChange={onChange}
                 error={
-                  errors.password?.type === 'required' &&
-                  strings.please_input_key
+                  (errors.password?.type === 'required' &&
+                    strings.please_input_key) ||
+                  (errorLogin && strings.wrong_login)
                 }
               />
             )}

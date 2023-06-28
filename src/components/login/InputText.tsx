@@ -8,19 +8,21 @@ interface Props {
   error?: string | boolean;
   value: string;
   onChange: (value: string) => void;
+  secureText?: boolean;
 }
 
 const InputText: React.FC<Props> = props => {
-  const {placeholder, error, value, onChange} = props;
+  const {placeholder, error, value, onChange, secureText} = props;
 
   return (
     <View style={{marginBottom: 17}}>
       <TextInput
-        style={[styles.container]}
+        style={[styles.container, error ? styles.invalidText : {}]}
         placeholder={placeholder}
         value={value}
         onChangeText={onChange}
         autoCapitalize="none"
+        secureTextEntry={secureText ? true : false}
       />
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </View>
@@ -42,7 +44,11 @@ const styles = StyleSheet.create({
   errorText: {
     paddingTop: 8,
     paddingHorizontal: 8,
-    color: 'red',
+    color: COLORS.DARK_RED_COLOR,
     ...FONTS.FONT_12_400,
+  },
+  invalidText: {
+    borderColor: COLORS.DARK_RED_COLOR,
+    backgroundColor: COLORS.LIGHT_RED_COLOR,
   },
 });

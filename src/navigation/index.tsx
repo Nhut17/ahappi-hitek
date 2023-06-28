@@ -3,8 +3,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import ROUTES from './route-key';
 import Login from '../screen/login/Login';
 import ListProduct from '../screen/product/ListProduct';
+import {RootStackParam} from './navigator';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParam>();
 
 const Navigation = () => {
   return (
