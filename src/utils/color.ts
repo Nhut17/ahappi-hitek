@@ -2,10 +2,13 @@ const COLORS = {
   BUTTON_COLOR: '#547DBF',
   BORDER_COLOR: '#DFE1E7',
   DARK_RED_COLOR: '#CF1C3B',
+  TEXT_RED: '#EB4335',
   LIGHT_RED_COLOR: '#FFEBF1',
   SECONDARY_COLOR: '#F7F8FA',
+  DISCOUNT_COLOR: '#E02020',
   WHITE: '#FFFFFF',
-  INCOME_COLOR: '#30A953',
+  BEST_SALER_COLOR: '#FBBC12',
+  INCOME_COLOR: (alpha: number) => `rgba(48, 169, 83, ${alpha})`,
 };
 
 export default COLORS;
