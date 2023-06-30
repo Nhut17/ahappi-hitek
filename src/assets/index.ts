@@ -8,4 +8,5 @@ export const IMAGES = {
 
 export const ICONS = {
   cart_shopping: require(`${icon}/cart_shopping.png`),
+  confirm: require(`${icon}/confirm.png`),
 };

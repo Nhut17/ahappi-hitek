@@ -4,14 +4,21 @@ import COLORS from '../../utils/color';
 import {FONTS} from '../../utils/typography';
 import {AirbnbRating} from 'react-native-ratings';
 import {ProductType} from '../../model/productModel';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface Props {
   data: ProductType;
+  handleAdd: () => void;
 }
 
 const ItemProduct: React.FC<Props> = props => {
-  const {data} = props;
+  const {data, handleAdd} = props;
   const price = 100000;
+
+  const sale: number = Math.round(
+    ((data?.fake_price - data?.collab_price) / data?.fake_price) * 100,
+  );
+
   return (
     <View style={styles.container}>
       <View>
@@ -23,12 +30,16 @@ const ItemProduct: React.FC<Props> = props => {
           }
           style={styles.imageProduct}
         />
+
         <View style={styles.bestSeller}>
           <Text style={styles.textBestSaler}>Best saler</Text>
         </View>
-        <View style={styles.discount}>
-          <Text style={styles.textDiscount}>10%</Text>
-        </View>
+
+        {data?.collab_price ? (
+          <View style={styles.discount}>
+            <Text style={styles.textDiscount}>{sale}%</Text>
+          </View>
+        ) : null}
       </View>
 
       <View style={styles.productContainer}>
@@ -46,7 +57,13 @@ const ItemProduct: React.FC<Props> = props => {
             starContainerStyle={{paddingHorizontal: 0}}
           />
           <Text style={{paddingHorizontal: 4, opacity: 0.2}}>|</Text>
-          <Text style={{fontSize: 10, opacity: 0.8}}>
+          <Text
+            style={{
+              fontSize: 10,
+              opacity: 0.8,
+              width: 100,
+              overflow: 'hidden',
+            }}>
             Đã bán {data?.inventory_amount ? data?.inventory_amount : 0}
           </Text>
         </View>
@@ -59,6 +76,10 @@ const ItemProduct: React.FC<Props> = props => {
           </Text>
         </View>
       </View>
+
+      <TouchableOpacity style={styles.buttonAdd} onPress={handleAdd}>
+        <Text style={styles.textAdd}>Thêm vào giỏ</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -68,9 +89,22 @@ export default ItemProduct;
 const styles = StyleSheet.create({
   container: {
     width: 200,
-    maxHeight: 350,
+    maxHeight: 400,
     borderRadius: 4,
     backgroundColor: COLORS.WHITE,
+    overflow: 'hidden',
+  },
+  buttonAdd: {
+    paddingVertical: 5,
+    borderRadius: 8,
+    backgroundColor: COLORS.PRIMARY_COLOR,
+    marginBottom: 8,
+    marginHorizontal: 8,
+  },
+  textAdd: {
+    textAlign: 'center',
+    color: 'white',
+    ...FONTS.FONT_14_600,
   },
   ratingStars: {},
   productContainer: {
