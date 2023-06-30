@@ -2,4 +2,9 @@
 
 # Install packages
  - yarn
- - yarn pod
+ - yarn pod : install packages for ios
+
+# Run app
+ - yarn start or yarn ios
+
+
